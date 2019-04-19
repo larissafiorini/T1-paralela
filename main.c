@@ -19,6 +19,14 @@ double TimeStop(double);
 // VALOR DO OVERHEAD DA MEDICAO DE TEMPO
 static double TimeOverhead = 0.0;
 
+
+char *valid_chars = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+char *hash_to_search = "aaI8pRQwCn7N2";
+int num_valid_chars;
+int FOUND = 0;
+char salt[3];
+
+
 // FUNCAO QUE CALCULA O OVERHEAD DA MEDICAO DE TEMPO
 void TimeInit()
 {
@@ -53,11 +61,7 @@ double TimeStop(double TimeInitial)
     return Time - TimeInitial - TimeOverhead;
 }
 
-char *valid_chars = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-char *hash_to_search = "aaI8pRQwCn7N2";
-int num_valid_chars;
-int FOUND = 0;
-char salt[3];
+
 
 void _dive(char prefix[], int level, struct crypt_data *data)
 {
@@ -116,6 +120,7 @@ int main()
     double inicio, total;
 
 	num_valid_chars = strlen(valid_chars);
+
     TimeInit();
     inicio = TimeStart();
 
