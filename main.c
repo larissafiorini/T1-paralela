@@ -23,7 +23,6 @@ static double TimeOverhead = 0.0;
 char *valid_chars = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 char *hash_to_search = "aaI8pRQwCn7N2";
 int num_valid_chars;
-int FOUND = 0;
 char salt[3];
 
 
@@ -69,13 +68,12 @@ void _dive(char prefix[], int level, struct crypt_data *data)
     level += 1;
     for (int i = 0; i < num_valid_chars; i++)
     {
-        if (level <= MAX_CHARS & !FOUND)
+        if (level <= MAX_CHARS)
         {
 			prefix[(level-1)] = valid_chars[i];
 			prefix[level] =  '\0';
 
 			if (strcmp(hash_to_search,crypt_r(prefix,salt, data))==0){
-           		FOUND=1;
 				fprintf(stderr,"Found password=%s\n",prefix);
 			}
             _dive(prefix, level, data);
@@ -94,17 +92,14 @@ void dive()
 
 		// printf("%d\n", i);
 		int currentLevel = 1;
-        if (currentLevel <= MAX_CHARS & !FOUND)
+        if (currentLevel <= MAX_CHARS)
         {
 			char newPrefix[MAX_CHARS + 1];
 			newPrefix[currentLevel-1] = valid_chars[i];
 			newPrefix[currentLevel] =  '\0';
 			if (strcmp(hash_to_search,crypt_r(newPrefix,salt,&data))==0){
-           		FOUND=1;
 				fprintf(stderr,"Found password=%s\n",newPrefix);
 			}
-
-			printf("%c\n", valid_chars[i]);
             _dive(newPrefix, currentLevel, &data);
         }
     }
