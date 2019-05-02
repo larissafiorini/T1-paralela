@@ -1,5 +1,3 @@
-// sequencial.c (Roland Teodorowitsch; 4 abr. 2019)
-
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,6 +7,7 @@
 #include <sys/time.h>
 #include <omp.h>
 
+// NUMERO MAXIMO DE CARACTERES DA SENHA
 #define MAX_CHARS 4
 
 // PROTOTIPOS
@@ -19,8 +18,9 @@ double TimeStop(double);
 // VALOR DO OVERHEAD DA MEDICAO DE TEMPO
 static double TimeOverhead = 0.0;
 
-
+// CARACTERES VALIDOS
 char *valid_chars = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+// SENHA QUE SE DESEJA ENCONTRAR
 char *hash_to_search = "aaI8pRQwCn7N2";
 int num_valid_chars;
 char salt[3];
@@ -60,8 +60,7 @@ double TimeStop(double TimeInitial)
     return Time - TimeInitial - TimeOverhead;
 }
 
-
-
+// FUNCAO QUE SERA CHAMADA RECURSIVAMENTE
 void _dive(char prefix[], int level, struct crypt_data *data)
 {
 
@@ -90,7 +89,6 @@ void dive()
 		struct crypt_data data;
 	    data.initialized = 0;
 
-		// printf("%d\n", i);
 		int currentLevel = 1;
         if (currentLevel <= MAX_CHARS)
         {
@@ -110,7 +108,6 @@ void dive()
 int main()
 {
     int num_chars, i, j, pos, vai_um;
-    // char key[MAX_CHARS + 1];
     char indChars[MAX_CHARS];
     double inicio, total;
 
@@ -118,8 +115,6 @@ int main()
 
     TimeInit();
     inicio = TimeStart();
-
-    // data.initialized = 0;
 
     salt[0] = hash_to_search[0];
     salt[1] = hash_to_search[1];
