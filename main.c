@@ -60,7 +60,8 @@ double TimeStop(double TimeInitial)
     return Time - TimeInitial - TimeOverhead;
 }
 
-// FUNCAO QUE SERA CHAMADA RECURSIVAMENTE
+// FUNCAO QUE SERA CHAMADA RECURSIVAMENTE 
+// (teóricamente privada, pois só deve ser chamada dentro da função dive original)
 void _dive(char prefix[], int level, struct crypt_data *data)
 {
 
@@ -82,14 +83,17 @@ void _dive(char prefix[], int level, struct crypt_data *data)
 
 void dive()
 {
-    
-	#pragma omp parallel for
+    //Gera threads que serão responsáveis por executar um galho da árvore de palavras
+    //Cada thread é responsável por uma um prefíxo (token) inicial
+    #pragma omp parallel for
     for (int i = 0; i < num_valid_chars; i++)
     {	
-		struct crypt_data data;
-	    data.initialized = 0;
-
-		int currentLevel = 1;
+	struct crypt_data data;
+	data.initialized = 0;
+	int currentLevel = 1;
+	    
+	//Condição de parada, ao ultrapassar o 
+	//tamanho máximo da palavra (controlado pela variável level) para de executar
         if (currentLevel <= MAX_CHARS)
         {
 			char newPrefix[MAX_CHARS + 1];
